@@ -37,7 +37,7 @@
                                 @csrf
                                 <h3 class="text-center text-info">Login</h3>
                                 <div class="form-group">
-                                    <label for="username" class="text-info">Username:</label><br>
+                                    <label for="username" class="text-info">User Email:</label><br>
                                     <input type="text" name="email" id="username" class="form-control">
                                 </div>
                                 
