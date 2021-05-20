@@ -30,22 +30,23 @@ class UserController extends Controller
 
   public function login()
   {
-    //
     return view('user.login');
   }
 
   public function testuser(Request $request)
   {
+    $request->session()->forget('post');
+    $request->session()->forget('editpost');
     $request->validate([
       'email'    => 'required|email|exists:users,email',
       'password' => 'required',
     ]);
-
+    $request->session()->put('userid', 'value');
     log::info($request);
     $credentials = $request->only('email', 'password');
     if (Auth::attempt($credentials)) {
       log::info('true');
-      session(['username' => $request->name]);
+      //session(['username' => $request->name]);
       $request->session()->regenerate();
       return redirect()->intended('post/postlist ');
     }
@@ -65,6 +66,38 @@ class UserController extends Controller
   public function index()
   {
     $users = $this->userInterface->getUserList();
-    return view('user.index', ['users' => $users]);
+    log::info($users);
+    return view('user.index', compact('users'))
+      ->with('i', (request()->input('page', 1) - 1) * 5);
   }
+
+  public function searchUser(Request $request)
+  {
+    $namesearch = $request->input('namesearch');
+    $emailsearch = $request->input('emailsearch');
+    $createdformsearch = $request->input('createdfromsearch');
+    $createdtosearch = $request->input('createdtosearch');
+    log::info($request);
+    log::info($namesearch);
+      log::info($emailsearch);
+      log::info($createdformsearch);
+      log::info($createdtosearch);
+    if ($namesearch == NULL && $emailsearch == NULL && $createdformsearch == NULL && $createdtosearch) {
+      $users = $this->userInterface->getUserList();
+    } else {
+      log::info($namesearch);
+      log::info($emailsearch);
+      log::info($createdformsearch);
+      log::info($createdtosearch);
+      $namesearch = !is_null($namesearch) ? $namesearch : '';
+      $emailsearch = !is_null($emailsearch) ? $emailsearch : '';
+      $createdformsearch = !is_null($createdformsearch) ? $createdformsearch : '';
+      $createdtosearch = !is_null($createdtosearch) ? $createdtosearch : '';
+      $users = $this->userInterface->searchUserList($namesearch,$emailsearch,$createdformsearch,$createdtosearch);
+    }
+    log::info(count($users));
+    return view('user.index', compact('users'))
+      ->with('i', (request()->input('page', 1) - 1) * 5);
+  }
+
 }

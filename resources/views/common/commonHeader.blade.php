@@ -1,16 +1,23 @@
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">SCM Bulletin Board</a>
-        </div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Users</a></li>
-            <li><a href="#">User</a></li>
-            <li><a href="#">Posts</a></li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">SCM Bulletin Board</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a href="{{route('user.index')}}" class="nav-link">Users <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('post.postlist')}}">Posts</a>
+            </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Login username</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        <ul class="navbar-nav pull-right">
+            <li class="nav-item active mr-10"><span class="nav-link"> Login username</span></li>
+            <li class="nav-item active"><a href="{{route('user.login')}}" class="nav-link"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
     </div>
 </nav>

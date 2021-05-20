@@ -29,5 +29,9 @@ class UserService implements UserServiceInterface
   {
     return $this->userDao->getUserList();
   }
+  public function searchUserList(string $name, string $email, string $datefrom, string $dateto)
+  {
+    return $this->userDao->searchUserList($name,$email,$datefrom,$dateto);
+  }
 
 }

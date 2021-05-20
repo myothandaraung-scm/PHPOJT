@@ -84,7 +84,7 @@
   font-size:14px;
   color: gray;
 }
-body {
+.login-body {
   margin: 0;
   padding: 0;
   background-color: #14b1c993;
@@ -102,4 +102,10 @@ body {
 }
 #login .container #login-row #login-column #login-box #login-form #register-link {
   margin-top: -85px;
+}
+.navbar{
+  background-color: #AADBEC;
+}
+.createform{
+  margin: 0 auto;
 }

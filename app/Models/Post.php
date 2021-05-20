@@ -11,7 +11,9 @@ class Post extends Model
     protected $fillable = [
         'title', 
         'description',
-        
+        'status',
+        'create_user_id',
+        'updated_user_id'
     ];
 
     protected $date = [
@@ -22,4 +24,5 @@ class Post extends Model
         'created_at',
         'updated_at'
     ];
+    protected $table = "posts";
 }

@@ -18,7 +18,7 @@
 </div>
 @endif -->
 
-<body>
+<body class="login-body">
     <div id="toolbar">
         <div id="login">
             <h3 class="text-center text-white pt-5">Login form</h3>
