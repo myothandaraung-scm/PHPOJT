@@ -42,11 +42,8 @@ class UserController extends Controller
       'password' => 'required',
     ]);
     $request->session()->put('userid', 'value');
-    log::info($request);
     $credentials = $request->only('email', 'password');
     if (Auth::attempt($credentials)) {
-      log::info('true');
-      //session(['username' => $request->name]);
       $request->session()->regenerate();
       return redirect()->intended('post/postlist ');
     }
@@ -66,7 +63,6 @@ class UserController extends Controller
   public function index()
   {
     $users = $this->userInterface->getUserList();
-    log::info($users);
     return view('user.index', compact('users'))
       ->with('i', (request()->input('page', 1) - 1) * 5);
   }
@@ -77,27 +73,20 @@ class UserController extends Controller
     $emailsearch = $request->input('emailsearch');
     $createdformsearch = $request->input('createdfromsearch');
     $createdtosearch = $request->input('createdtosearch');
-    log::info($request);
-    log::info($namesearch);
-      log::info($emailsearch);
-      log::info($createdformsearch);
-      log::info($createdtosearch);
-    if ($namesearch == NULL && $emailsearch == NULL && $createdformsearch == NULL && $createdtosearch) {
+    if ($namesearch == NULL && $emailsearch == NULL && $createdformsearch == NULL && $createdtosearch == NULL) {
       $users = $this->userInterface->getUserList();
     } else {
-      log::info($namesearch);
-      log::info($emailsearch);
-      log::info($createdformsearch);
-      log::info($createdtosearch);
       $namesearch = !is_null($namesearch) ? $namesearch : '';
       $emailsearch = !is_null($emailsearch) ? $emailsearch : '';
       $createdformsearch = !is_null($createdformsearch) ? $createdformsearch : '';
       $createdtosearch = !is_null($createdtosearch) ? $createdtosearch : '';
       $users = $this->userInterface->searchUserList($namesearch,$emailsearch,$createdformsearch,$createdtosearch);
     }
-    log::info(count($users));
     return view('user.index', compact('users'))
       ->with('i', (request()->input('page', 1) - 1) * 5);
+  }
+  public function register(){
+    return view('user.register');
   }
 
 }

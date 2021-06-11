@@ -47,7 +47,6 @@ class PostController extends Controller
     } else {
       $posts = $this->postInterface->searchPostList($search);
     }
-    log::info(count($posts));
     return view('post.postlist', compact('posts'))
       ->with('i', (request()->input('page', 1) - 1) * 5);
   }
@@ -106,7 +105,6 @@ class PostController extends Controller
     ]);
     if ($request->status == 'on') {
       $status = 1;
-      log::info("before s");
       log::info($request->status);
     } else {
       $status = 0;
@@ -167,7 +165,6 @@ class PostController extends Controller
     $request->validate([
       'file' => 'required|mimes:csv,txt,xlx,xls,xlsx|max:2048'
       ]);
-      log::info($request);
       $id = Auth::user()->id;
       $this->postInterface->importData($request,$id);
       $name = time().'_'.$request->file->getClientOriginalName();

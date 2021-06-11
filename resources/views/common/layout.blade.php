@@ -15,7 +15,7 @@
 
 <body>
     @include('common.commonHeader')
-    <div class="container-fluid mt-3">
+    <div class="container-fluid mt-3 container_body">
         @yield('content')
     </div>
     <footer class="fixed-bottom">

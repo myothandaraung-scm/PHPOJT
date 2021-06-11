@@ -52,16 +52,13 @@ class PostDao implements PostDaoInterface
     DB::table('posts')
       ->where('id', $request->id)
       ->update(array('title' => $request->title, 'description' => $request->description, 'status' => $status, 'updated_user_id' => $userId));
-    log::info("success update");
   }
   public function deletePost(Post $post, int $userId)
   {
-    log::info($post);
     $deleteddate = new DateTime('now');
     DB::table('posts')
       ->where('id', $post->id)
       ->update(array('status' => 0, 'deleted_user_id' => $userId, 'deleted_at' => $deleteddate));
-    log::info("delete success");
   }
   public function exportPost()
   {

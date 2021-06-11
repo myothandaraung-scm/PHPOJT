@@ -37,6 +37,7 @@ Route::post('post/importfile','PostController@importfile')->name('post.importfil
 
 Route::get('users/','UserController@index')->name('user.index');
 Route::get('user/searchUser','UserController@searchUser')->name('user.searchUser');
+Route::get('user/register','UserController@register')->name('user.register');
 
 
 

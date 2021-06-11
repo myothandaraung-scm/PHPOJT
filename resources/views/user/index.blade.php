@@ -22,7 +22,6 @@
                     </div>
                     <div class="col-md-2 col-sm-2">
                         <button type="submit" class="btn btn-primary">Search</button>
-
                     </div>
 
                 </div>
@@ -30,7 +29,8 @@
         </div>
         <div class="col-md-2 col-sm-2">
             <!-- <button type="button" class="btn btn-secondary">Download</button> -->
-            <a class="btn btn-info btn-md" href="{{route('post.create')}}">Add</a>
+            <a class="btn btn-info btn-md" href="{{route('user.register')}}">Add</a>
+            
         </div>
     </div>
     <table class="table table-striped">
@@ -47,6 +47,13 @@
                 </tr>
             </thead>
         <tbody>
+        @if(count($users) == 0)
+        <td colspan="7">
+            <HelpBlock>
+                <span class="row justify-content-center">Search data is Empty</span>
+            </HelpBlock>
+        </td>                
+        @else
             @foreach($users as $user)
             <tr>
                 <td>{{$user->name}}</td>
@@ -58,6 +65,9 @@
                 <td></td>
             </tr>
             @endforeach
+        
+        @endif
+           
         </tbody>
     </table>
 </div>

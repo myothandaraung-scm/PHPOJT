@@ -37,6 +37,13 @@
       </tr>
     </thead>
     <tbody>
+    @if(count($posts) == 0)
+      <td colspan="7">
+            <HelpBlock>
+                <span class="row justify-content-center">Search data is Empty</span>
+            </HelpBlock>
+        </td>
+    @else
       @foreach($posts as $post)
       <tr>
         <td>{{ ++$i }}</td>
@@ -74,13 +81,11 @@
         </td>
       </tr>
       @endforeach
+    
+    @endif
+      
     </tbody>
   </table>
-  @if(count($posts) == 0)
-  <HelpBlock>
-    <span class="row justify-content-center">Search data is Empty</span>
-  </HelpBlock>
-  @endif
 </div>
 <script>
   function myFunction() {
