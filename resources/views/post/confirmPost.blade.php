@@ -20,7 +20,7 @@
         <button class="btn btn-primary" type="button" onclick="window.location='{{ url()->previous() }}/{{$posts->id}}'">Cancel</button>
         <!-- <button class="btn btn-primary" type="button" onclick="window.location='{{ url('post/create')}}/{{$posts->id}}'">Cancel</button> -->
         <div class="col-sm-6">
-            <button class="btn btn-primary" type="submit">Confirm</button>
+            <button class="btn btn-primary" type="submit">Create</button>
         </div>
     </div>
 

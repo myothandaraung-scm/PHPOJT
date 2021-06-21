@@ -19,7 +19,6 @@ Route::get('/', function () {
 
 
 Route::get('users/commonHeader','UserController@commonHeader')->name('user.commonHeader');
-
 Route::get('post/postlist','PostController@postlist')->name('post.postlist');
 Route::get('post/searchPost','PostController@searchPost')->name('post.searchPost');
 Route::get('post/create','PostController@create')->name('post.create');
@@ -38,6 +37,12 @@ Route::post('post/importfile','PostController@importfile')->name('post.importfil
 Route::get('users/','UserController@index')->name('user.index');
 Route::get('user/searchUser','UserController@searchUser')->name('user.searchUser');
 Route::get('user/register','UserController@register')->name('user.register');
+Route::post('user/confirmuser','UserController@confirmuser')->name('user.confirmuser');
+Route::put('user/createuser','UserController@createuser')->name('user.createuser');
+Route::get('user/{user}/edituser','UserController@edituser')->name('user.edituser');
+Route::post('user/confirmedituser','UserController@confirmedituser')->name('user.confirmedituser');
+Route::put('user/updateuser','UserController@updateuser')->name('user.updateuser');
+
 
 
 

@@ -5,8 +5,10 @@ namespace App\Dao\User;
 use Illuminate\Support\Carbon;
 use App\Contracts\Dao\User\UserDaoInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Hash;
 
 class UserDao implements UserDaoInterface
 {
@@ -75,13 +77,18 @@ class UserDao implements UserDaoInterface
     }
     return $user;
   }
+  public function createUser(Request $request,int $userId)
+  {
+    log::info("create dao");
+    $type = '0';
+    log::info($request);
+    log::info($userId);
+    if ($request->type == 'Admin') {
+      $type = '0';
+      //log::info($request->status);
+    } else {
+      $type = '1';
+    }
+    User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password),'profile' => $request->profile, 'type'=>$type,'phone'=>$request->phone,'address'=>$request->address,'dob'=>$request->dob,'create_user_id'=>$userId,'updated_user_id'=> $userId]);
+  }
 }
-// $user = DB::table('users as user1')
-// ->where(function ($query) use ($name,$email,$datefrom,$dateto) {
-//   $query->orWhere('user1.name', 'LIKE', '%' . $name . '%')
-//     ->where('user1.email', 'LIKE', '%' . $email . '%')
-//     ->orWhereBetween(DB::raw('(DATE_FORMAT(user1.created_at,"%Y-%m-%d"))'), [$datefrom, $dateto]);
-// })
-//   ->join('users AS user2', 'user1.create_user_id', '=', 'user2.id')
-//   ->select('user1.*', 'user2.name as createduserName')
-//   ->paginate(5);

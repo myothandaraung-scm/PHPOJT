@@ -21,7 +21,6 @@
     <footer class="fixed-bottom">
         @include('common.commonFooter')
     </footer>
-
 </body>
 
 </html>

@@ -5,15 +5,18 @@
 .margintop-100{
   margin-top: 100px;
 }
-.fillData{ 
+.fillData{
   color: red;
   margin-left: 5px;
   line-height: 4px;
   height: 24px;
   font-size: 12px;
-
 }
 
+.confirmForm{
+  max-width: 1000px;
+  margin: auto;
+}
 .card-header{
   background-color: rgba(0,0,0,0) !important;
 }

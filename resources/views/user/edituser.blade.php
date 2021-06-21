@@ -5,8 +5,14 @@
             <div class="card">
                 <div class="card-header">Register</div>
                 <div class="card-body">
-                    <form action="{{route('user.confirmuser')}}" method="POST" name="my_form" enctype="multipart/form-data">
-                        @csrf
+                    <form action="{{route('user.confirmedituser')}}" method="POST" name="my_form" enctype="multipart/form-data">
+                        @csrf 
+                        <div class="form-group">   
+                            <div class="text-left"><h3>Update User</h3></div>
+                            <div class="text-right">
+                                <img src="{{url($user->profile)}}"  alt="profile-image" style="width: 120px;height: 100px;">
+                            </div>
+                        </div>
                         <div class="form-group row ">
                             <label for="name" class="col-md-4 col-form-label text-md-left">Full Name</label>
                             <div class="col-md-6">
@@ -22,39 +28,8 @@
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-left">Email Address</label>
                             <div class="col-md-6">
-                                <div class="input-group-prepend">
-                                    <input type="text" id="email" class="form-control" name="email" value="{{$user->email}}" required><span class="fillData">*</span>
-                                </div>
-                                @if($errors->has('email'))
-                                    <span class="text-danger">{{ $errors->first('email') }}</span>
-                                @endif
+                                <input type="text" name="email" readonly class="form-control-plaintext" value="{{$user->email}}">
                             </div> 
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-left">Password</label>
-                            <div class="col-md-6">
-                                <div class="input-group-prepend">
-                                    <input type="password"  class="form-control" name="password" value="{{$user->password}}" required><span class="fillData">*</span>
-                                </div>
-                                @if($errors->has('password'))
-                                    <span class="text-danger">{{ $errors->first('password') }}</span>
-                                @endif
-                            </div> 
-                                
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="confirm_password" class="col-md-4 col-form-label text-md-left">Confirm  Password</label>
-                            <div class="col-md-6">
-                                <div class="input-group-prepend">
-                                    <input type="password" class="form-control" name="confirm_password" value="{{$user->confirm_password}}" required><span class="fillData">*</span><br/>
-                                </div>
-                                @if($errors->has('confirm_password'))
-                                    <span class="text-danger">{{ $errors->first('confirm_password') }}</span>
-                                @endif
-                            </div>                               
-                            
                         </div>
 
                         <div class="form-group row">
@@ -89,14 +64,14 @@
                         <div class="form-group row">
                             <label for="dob" class="col-md-4 col-form-label text-md-left">Address</label>
                             <div class="col-md-6">
-                                <textarea type="text" class="form-control" id="address" style="height:50px" name="address" placeholder="address" value="{{$user->address}}" ></textarea>
+                                <textarea type="text" class="form-control" id="address" style="height:50px" name="address" placeholder="address" >{{$user->address}}</textarea>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="dob" class="col-md-4 col-form-label text-md-left">Profile</label>
                             <div class="col-md-6 input-group-prepend">
-                                <input type="file" name="profile" id="image" value="{{$user->profile}}" required>
+                                <input type="file" name="profile" id="image"required>
                                 <span class="fillData">*</span>
                             </div>
                         </div>

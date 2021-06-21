@@ -62,7 +62,10 @@
                 <td>{{$user->phone}}</td>
                 <td>{{$user->dob}}</td>
                 <td>{{$user->created_at}}</td>
-                <td></td>
+                <td>
+                    <a class="btn btn-primary-outline" href="{{route('user.edituser',$user->id)}}">Edit</a>
+                </td>
+
             </tr>
             @endforeach
         
@@ -71,6 +74,5 @@
         </tbody>
     </table>
 </div>
-
-@endsection
 {!!$users->links()!!}
+@endsection

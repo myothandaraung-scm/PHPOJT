@@ -32,7 +32,7 @@
         <div class="form-group row">
             <button class="btn btn-primary" type="button" onclick="clearValue()">Cancel</button>
             <div class="col-sm-6">
-                <button class="btn btn-primary" type="submit">Create</button>
+                <button class="btn btn-primary" type="submit">Confirm</button>
             </div>
         </div>
     </form>

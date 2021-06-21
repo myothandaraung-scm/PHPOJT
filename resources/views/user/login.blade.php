@@ -7,16 +7,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
-<!-- @if ($errors->any())
-<div class="alert alert-danger">
-    <strong>Whoops!</strong> There were some problems with your input.<br><br>
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif -->
 
 <body class="login-body">
     <div id="toolbar">
@@ -26,24 +16,30 @@
                 <div id="login-row" class="row justify-content-center align-items-center">
                     <div id="login-column" class="col-md-6">
                         <div id="login-box" class="col-md-12">
-                            @if ($errors->any())
+                            <!-- @if ($errors->any())
                                 <HelpBlock>
                                     @foreach ($errors->all() as $error)
                                     <span>{{ $error }}</span>
                                     @endforeach
                                 </HelpBlock>
-                                @endif
+                                @endif -->
                             <form action="{{ route('user.testuser') }}" class="form" method="POST">
                                 @csrf
                                 <h3 class="text-center text-info">Login</h3>
                                 <div class="form-group">
                                     <label for="username" class="text-info">User Email:</label><br>
                                     <input type="text" name="email" id="username" class="form-control">
+                                    @if($errors->has('email'))
+                                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                                    @endif
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="password" class="text-info">Password:</label><br>
                                     <input type="password" name="password" id="password" class="form-control">
+                                        @if($errors->has('password'))
+                                            <span class="text-danger">{{ $errors->first('password') }}</span>
+                                        @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
