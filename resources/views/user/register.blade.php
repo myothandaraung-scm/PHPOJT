@@ -107,19 +107,15 @@
                                 <img id="preview-image-before-upload" alt="preview image" style="width: 120px;height: 100px;">
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <div class="col-md-4"></div>
                             <div class="col-sm-8">
                                 <button class="btn btn-primary" type="button" onclick="window.location='{{ url()->previous() }}'">Cancel</button>
                                 <button  type="submit" class="btn btn-primary">Confirm</button>
                             </div>
-                        </div>
-
-                                                    
+                       </div>                                                    
                     </form>                       
-                </div>                   
-                
+                </div>                                  
             </div>
         </div>
     </div>

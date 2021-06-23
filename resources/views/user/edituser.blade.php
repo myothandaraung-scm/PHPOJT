@@ -3,17 +3,18 @@
     <div class="container">
         <div class="col-md-8 justify-content-center">
             <div class="card">
-                <div class="card-header">Register</div>
+                <div class="card-header">Edit User Information</div>
                 <div class="card-body">
                     <form action="{{route('user.confirmedituser')}}" method="POST" name="my_form" enctype="multipart/form-data">
                         @csrf 
-                        <div class="form-group">   
-                            <div class="text-left"><h3>Update User</h3></div>
-                            <div class="text-right">
+
+                        <div class="form-group row">   
+                            <div class="col-md-4 col-form-label text-md-left"><h3>Edit User</h3></div>
+                            <div class="col-md-6 text-right">
                                 <img src="{{url($user->profile)}}"  alt="profile-image" style="width: 120px;height: 100px;">
                             </div>
                         </div>
-                        <div class="form-group row ">
+                        <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-left">Full Name</label>
                             <div class="col-md-6">
                                 <div class="input-group-prepend">
@@ -22,7 +23,9 @@
                                 @if($errors->has('name'))
                                     <span class="text-danger">{{ $errors->first('name') }}</span>
                                 @endif
-                            </div>      
+                            </div>
+                            <input type="text" name="id" hidden class="form-control-plaintext" value="{{$user->id}}">
+      
                         </div>
 
                         <div class="form-group row">
@@ -53,7 +56,6 @@
                                 @endif
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <label for="dob" class="col-md-4 col-form-label text-md-left">Date of Birth</label>
                             <div class="col-md-6">
@@ -82,9 +84,9 @@
                                 <img id="preview-image-before-upload" alt="preview image" style="width: 120px;height: 100px;">
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-4"></div>
+                        <a href="{{route('user.changeuserpassword')}}">Change password</a>
+                        <div class="form-group mt-5 row">
+                            <div class="col-md-3"></div>
                             <div class="col-sm-8">
                                 <button class="btn btn-primary" type="button" onclick="window.location='{{ url()->previous() }}'">Cancel</button>
                                 <button  type="submit" class="btn btn-primary">Confirm</button>

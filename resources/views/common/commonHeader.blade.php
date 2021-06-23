@@ -9,7 +9,7 @@
                 <a href="{{route('user.index')}}" class="nav-link">Users <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">User</a>
+                <a href="{{route('user.profile')}}" class="nav-link" href="#">User</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('post.postlist')}}">Posts</a>

@@ -35,6 +35,7 @@ Route::post('post/importfile','PostController@importfile')->name('post.importfil
 
 
 Route::get('users/','UserController@index')->name('user.index');
+Route::get('user/profile','UserController@userprofile')->name('user.profile');
 Route::get('user/searchUser','UserController@searchUser')->name('user.searchUser');
 Route::get('user/register','UserController@register')->name('user.register');
 Route::post('user/confirmuser','UserController@confirmuser')->name('user.confirmuser');
@@ -42,6 +43,9 @@ Route::put('user/createuser','UserController@createuser')->name('user.createuser
 Route::get('user/{user}/edituser','UserController@edituser')->name('user.edituser');
 Route::post('user/confirmedituser','UserController@confirmedituser')->name('user.confirmedituser');
 Route::put('user/updateuser','UserController@updateuser')->name('user.updateuser');
+Route::delete('user/{user}','UserController@deleteuser')->name('user.deleteuser');
+Route::get('user/changeuserpassword','UserController@changeuserpassword')->name('user.changeuserpassword');
+Route::post('user/updateuserpassword','UserController@updateuserpassword')->name('user.updateuserpassword');
 
 
 

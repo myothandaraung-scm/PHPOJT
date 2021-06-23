@@ -10,7 +10,7 @@
         </div>
     </div>
     <input type="text" name="profile" hidden class="form-control-plaintext" value="{{$user->profile}}">
-    
+
     <div class="form-group row">
         <label for="title" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-6">

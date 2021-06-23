@@ -41,6 +41,12 @@ class PostController extends Controller
   }
   public function searchPost(Request $request)
   {
+    $request->session()->forget('post');
+    $request->session()->forget('user');
+    $request->session()->forget('editpost');
+    $request->session()->forget('edituser');
+    log::info("search");
+    log::info($request);
     $search = $request->input('postserach');
     if ($search == NULL) {
       $posts = $this->postInterface->getPostList();
@@ -74,6 +80,9 @@ class PostController extends Controller
 
   public function createpost(Request $request)
   {
+    $request->session()->forget('user');
+    $request->session()->forget('editpost');
+    $request->session()->forget('edituser');
     $request->session()->forget('post');
     $id = Auth::user()->id;
     $this->postInterface->createPost($request, $id);
@@ -116,6 +125,9 @@ class PostController extends Controller
 
   public function updatepost(Request $request, Post $post)
   {
+    $request->session()->forget('post');
+    $request->session()->forget('user');
+    $request->session()->forget('edituser');
     $request->session()->forget('editpost');
     $id = Auth::user()->id;
     $this->postInterface->updatePost($request, $post, $id);
@@ -130,8 +142,14 @@ class PostController extends Controller
     return redirect()->route('post.postlist')
       ->with('success', 'post deleted successfully');
   }
-  public function export()
+  public function export(Post $post)
   {
+    $request->session()->forget('post');
+    $request->session()->forget('user');
+    $request->session()->forget('editpost');
+    $request->session()->forget('edituser');
+    log::info("export");
+    log::info($post);
     $headers = array(
       "Content-type" => "text/csv",
       "Content-Disposition" => "attachment; filename=file.csv",
@@ -160,7 +178,7 @@ class PostController extends Controller
     return view('post.importCSV');
   }
 
-  public function importfile(Request $request)
+  public function importfile()
   {
     $request->validate([
       'file' => 'required|mimes:csv,txt,xlx,xls,xlsx|max:2048'

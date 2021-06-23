@@ -12,7 +12,6 @@
               <button type="submit" class="btn btn-primary">Search</button>
             </span>
           </div>
-
         </div>
       </form>
     </div>
@@ -47,13 +46,71 @@
       @foreach($posts as $post)
       <tr>
         <td>{{ ++$i }}</td>
-        <td>{{$post->title}}</td>
+        <td>
+          <a type="button" class="btn btn-primary-outline" data-toggle="modal" data-target="#postDetailModal_{{$post->id}}">{{$post->title}}</a>
+            <div class="modal fade" id="postDetailModal_{{$post->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Post Detail Information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="title" class="col-sm-6 col-form-label">Post Title</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="title" readonly class="form-control-plaintext" value="{{$post->title}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-6 col-form-label">Description</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="description" readonly class="form-control-plaintext" value="{{$post->description}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="title" class="col-sm-6 col-form-label">status</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="status" readonly class="form-control-plaintext" value="{{$post->status}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-6 col-form-label">Create_at</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="created_at" readonly class="form-control-plaintext" value="{{$post->created_at}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="title" class="col-sm-6 col-form-label">Created User</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="createusesr" readonly class="form-control-plaintext" value="{{$post->createuser}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-6 col-form-label">LastUpdated User</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="updateuser" readonly class="form-control-plaintext" value="{{$post->updateuser}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-6 col-form-label">LastUpdated_at</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="updated_at" readonly class="form-control-plaintext" value="{{$post->updated_at}}">
+                        </div>
+                    </div>                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </td>
         <td>{{$post->description}}</td>
-        <td>{{$post->name}}</td>
+        <td>{{$post->createuser}}</td>
         <td>{{$post->created_at}}</td>
         <td><a class="btn btn-primary-outline" href="{{route('post.editpost',$post->id)}}">Edit</a></td>
         <td>
-          <!-- <button type="submit" class="btn btn-danger">Delete</button> -->
           <form action="{{route('post.deletepost',$post->id)}}" method="POST">
             <button type="button" class="btn btn-primary-outline" data-toggle="modal" data-target="#confirmModal_{{$post->id}}">Delete</button>
             <div class="modal fade" id="confirmModal_{{$post->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -75,21 +132,20 @@
                 </div>
               </div>
             </div>
-
           </form>
-
         </td>
       </tr>
-      @endforeach
-    
-    @endif
-      
+      @endforeach    
+    @endif     
     </tbody>
   </table>
 </div>
 <script>
   function myFunction() {
     $('#confirmModal').show();
+  }
+  function myFunction1() {
+    $('#postDetailModal__').show();
   }
 </script>
 {!!$posts->links()!!}

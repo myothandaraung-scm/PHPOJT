@@ -1,7 +1,10 @@
 @extends('common.layout')
 @section('content')
-
-<form action="{{route('post.updatepost')}}" method="POST">
+<div class="row">
+    <h3 class="col-md-4 bg-text">Confirmation Post Edit </h3>
+</div>
+<br>
+<form action="{{route('post.updatepost')}}" class="confirmForm" method="POST">
     @method('PUT')
     @csrf
     <input type="text" name="id" class="form-control" value="{{$post->id}}" hidden>
@@ -22,8 +25,9 @@
         <div class="col-sm-6">
         <input data-id="{{$post->status}}" class="toggle-class" type="checkbox" name="status" data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Active" data-off="InActive" {{ $post->status ? 'checked' : '' }}>        </div>
     </div>
-    <div class="form-group row">
-        <button class="btn btn-primary" type="button" onclick="window.location='{{ url()->previous() }}'">Cancel</button>
+    <div class="form-group mt-5 row">
+        <a class="btn btn-primary" onClick="window.history.back()">Cancel</a>
+        <!-- <button class="btn btn-primary" type="button" onclick="window.location='{{ url()->previous() }}'">Cancel</button> -->
         <div class="col-sm-6">
             <button class="btn btn-primary" type="submit">Update</button>
         </div>

@@ -2,12 +2,12 @@
 @section('content')
 
 <div class="row">
-    <div class="col-md-4 bg-text">Update User</div>
-    <a class="btn btn-primary" href="{{ route('post.postlist') }}"> Back</a>
+    <h3 class="col-md-4 bg-text">Edit Post Information</h3>
+    <a class="btn btn-primary right" href="{{ route('post.postlist') }}"> Back</a>
 
 </div>
 <br>
-<form action="{{route('post.confirmeditpost')}}" method="POST">
+<form action="{{route('post.confirmeditpost')}}" class="confirmForm" method="POST">
     @csrf
     <input type="text" name="id" class="form-control" value="{{$post->id}}" hidden>
     <div class="form-group row">
@@ -28,13 +28,24 @@
             <input data-id="{{$post->status}}" class="toggle-class" type="checkbox" name="status" data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Active" data-off="InActive" {{ $post->status ? 'checked' : '' }}>
         </div>
     </div>
-
-    <div class="form-group row">
-        <button class="btn btn-primary" type="button" onclick="clearEditValue()">Clear</button>
-        <div class="col-sm-6">
-            <button class="btn btn-primary" type="submit">Confirm</button>
-        </div>
+    <div class="form-group mt-5 row">
+            <button class="btn btn-primary ml-5" type="button" onclick="clearEditValue()">Clear</button>
+            <button class="btn btn-primary ml-4" type="submit">Confirm</button>
     </div>
+    <!-- <div class="form-group row">
+        <div class="col-md-12 col-sm-12 text-center">
+           
+        </div>
+    </div> -->
+
+    <!-- <div class="form-group row">
+       <div class="col-sm-4">       
+         <button class="btn btn-primary center" type="button" onclick="clearEditValue()">Clear</button>
+        </div>
+
+                <button class="btn btn-primary right" type="submit">Confirm</button>
+        
+    </div> -->
 
 </form>
 <script>

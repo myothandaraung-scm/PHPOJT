@@ -63,7 +63,30 @@
                 <td>{{$user->dob}}</td>
                 <td>{{$user->created_at}}</td>
                 <td>
-                    <a class="btn btn-primary-outline" href="{{route('user.edituser',$user->id)}}">Edit</a>
+                    <!-- <a class="btn btn-primary-outline" href="{{route('user.edituser',$user->id)}}">Edit</a> -->
+                    <form action="{{route('user.deleteuser',$user->id)}}" method="POST">
+                        <button type="button" class="btn btn-primary-outline" data-toggle="modal" data-target="#userDeleteModal_{{$user->id}}">Delete</button>
+                        <div class="modal fade" id="userDeleteModal_{{$user->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirmation</h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Do you want to delete "{{$user->name}}" ?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                {{ csrf_field() }}
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                    </form>
                 </td>
 
             </tr>

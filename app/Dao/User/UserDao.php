@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Hash;
+use DateTime;
 
 class UserDao implements UserDaoInterface
 {
@@ -18,6 +19,7 @@ class UserDao implements UserDaoInterface
   {
     $user = DB::table('users as user1')
       ->join('users AS user2', 'user1.create_user_id', '=', 'user2.id')
+      ->orWhereNull('user1.deleted_user_id')
       ->select('user1.*', 'user2.name as createduserName')
       ->paginate(5);
     return $user;
@@ -90,5 +92,28 @@ class UserDao implements UserDaoInterface
       $type = '1';
     }
     User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password),'profile' => $request->profile, 'type'=>$type,'phone'=>$request->phone,'address'=>$request->address,'dob'=>$request->dob,'create_user_id'=>$userId,'updated_user_id'=> $userId]);
+  }
+  public function updateUser(Request $request, int $userId)
+  {
+    log::info("updateDao");
+    $type = 0;
+    if ($request->type == 'Admin') {
+      $type = 0;
+    } else {
+      $type = 1;
+    }
+    log::info($request);
+    DB::table('users')
+      ->where('id', $request->id)
+      ->update(array('name' => $request->name, 'email' => $request->email, 'profile' => $request->profile, 'type'=>$type,'phone'=>$request->phone,'address'=>$request->address,'dob'=>$request->dob,'create_user_id'=>$userId,'updated_user_id'=> $userId));
+  }
+  public function deleteUser(User $user, int $userId)
+  {
+    log::info("delete dao");
+    log::info($user);
+    $deleteddate = new DateTime('now');
+    DB::table('users')
+      ->where('id', $user->id)
+      ->update(array('deleted_user_id' => $userId, 'deleted_at' => $deleteddate));
   }
 }
