@@ -6,7 +6,7 @@
       <form action="{{ route('post.searchPost') }}" method="GET" role="search">
         {{ csrf_field() }}
         <div class="input-group mb-3">
-          <input type="search" class="form-control" name="postserach" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+          <input type="search" class="form-control" name="postserach" placeholder="Search" value="{{$search}}" aria-label="Search" aria-describedby="search-addon" />
           <div class="input-group-append">
             <span class="input-group-btn">
               <button type="submit" class="btn btn-primary">Search</button>
@@ -16,10 +16,8 @@
       </form>
     </div>
     <div class="col-md-4 col-sm-4">
-      <!-- <button type="button" class="btn btn-primary" href="window.location='{{ url('post/importCSV')}}'">Upload</button> -->
       <a class="btn btn-info btn-md" href="{{route('post.importCSV')}}">Upload</a>
       <a class="btn btn-info btn-md" href="{{route('post.export')}}">Download</a>
-      <!-- <button type="button" class="btn btn-secondary">Download</button> -->
       <a class="btn btn-info btn-md" href="{{route('post.create')}}">Add</a>
     </div>
   </div>
@@ -140,14 +138,6 @@
     </tbody>
   </table>
 </div>
-<script>
-  function myFunction() {
-    $('#confirmModal').show();
-  }
-  function myFunction1() {
-    $('#postDetailModal__').show();
-  }
-</script>
 {!!$posts->links()!!}
 
 @endsection

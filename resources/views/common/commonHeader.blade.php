@@ -16,8 +16,8 @@
             </li>
         </ul>
         <ul class="navbar-nav pull-right">
-            <li class="nav-item active mr-10"><span class="nav-link"> Login username</span></li>
-            <li class="nav-item active"><a href="{{route('user.login')}}" class="nav-link"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            <li class="nav-item active mr-10"><span class="nav-link">{{{ Auth::user()->name }}}</span></li>
+            <li class="nav-item active"><a href="{{route('user.logout')}}" class="nav-link"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
     </div>
 </nav>

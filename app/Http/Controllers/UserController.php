@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -14,7 +13,7 @@ use Illuminate\Database\Query\Expression;
 use App\Contracts\Services\User\UserServiceInterface;
 use Illuminate\Validation\Rule;
 use App\Models\User;
-
+use Illuminate\Auth\Middleware\Authenticate;
 class UserController extends Controller
 {
   private $userInterface;
@@ -25,8 +24,10 @@ class UserController extends Controller
    */
   public function __construct(UserServiceInterface $userInterface)
   {
-    $this->userInterface = $userInterface;
+    $this->userInterface = $userInterface;  
+    
   }
+  
   /**
    * Display a listing of the resource.
    *
@@ -48,13 +49,13 @@ class UserController extends Controller
       'email'    => 'required|email|exists:users,email',
       'password' => 'required',
     ]);
+    //return redirect()->intended('post/postlist');
     $request->session()->put('userid', 'value');
-    log::info($request);
     $credentials = $request->only('email', 'password');
     if (Auth::attempt($credentials)) {
-      log::info('true');
       $request->session()->regenerate();
-      return redirect()->intended('post/postlist');
+      return redirect()->route('post.postlist');
+      //return redirect()->intended('post/postlist');
     }
     else{
       $errors['password']=  'password is incorrect';
@@ -76,7 +77,6 @@ class UserController extends Controller
 
   public function userprofile(){
     $user = Auth::user();
-    log::info($user);
     $typestring = '';
     if($user->type == 0){
       $typeString = 'Admin';
@@ -85,7 +85,6 @@ class UserController extends Controller
       $typeString = 'User';
     }
     $user->typeString = $typeString;
-    log::info($user);
     return view('user.userprofile', compact('user'));
   }
 
@@ -113,11 +112,6 @@ class UserController extends Controller
   }
 
   public function register(Request $request, User $user){
-    
-    log::info("data");
-    log::info("get info");
-    log::info($request);
-    log::info($user);
     if ($request->session()->has('user')) {
       $user->name = $request->session()->get('user')['name'];
       $user->email = $request->session()->get('user')['email'];
@@ -172,9 +166,6 @@ class UserController extends Controller
   }
   
   public function edituser(Request $request,User $user){
-    log::info("data");
-    log::info("get info");
-    log::info($request);
     if ($request->session()->has('edituser')) {
       $user->name = $request->session()->get('edituser')['name'];
       $user->email = $request->session()->get('edituser')['email'];
@@ -201,8 +192,6 @@ class UserController extends Controller
       'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
       ]);
       $type = '';
-      log::info("$request confirm");
-      log::info($request);
       if($request->type == '0'){
         $request->type  = 'Admin';
       }
@@ -239,13 +228,9 @@ class UserController extends Controller
     $request->session()->forget('user');
     $request->session()->forget('editpost');
     $request->session()->forget('edituser');
-    log::info("delete user");
-    log::info($user);
     $id = Auth::user()->id;
     $this->userInterface->deleteUser($user, $id);
     return redirect()->intended('users/');
-    // return redirect()->route('post.postlist')
-    //   ->with('success', 'post deleted successfully');
   }
   public function changeuserpassword()
   {
@@ -270,5 +255,9 @@ class UserController extends Controller
         $errors['old_password']=  'incorrect existing password';
         return redirect()->back()->withErrors($errors);
      }
+  }
+  public function logout(){
+    Auth::logout();
+    return redirect()->intended('/login');
   }
 }

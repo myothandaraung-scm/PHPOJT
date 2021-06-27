@@ -1,8 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\EnsureTokenIsValid;
+// use App\Http\Middleware\Authenticate;
+// use App\Http\Middleware\Authenticate;
 
-
+//Route::get('post/postlist','PostController@postlist')->middleware('checkuser');
+// 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,14 +16,24 @@ use Illuminate\Support\Facades\Route;
 | Description : "This page contains users routes, post routes and csv routes toward controllers"
 |
 */
-
+// Route::get('/', function () {
+//     return view('user/login');
+// })->name('user.login');
+// Route::get('/login' , 'UserController@login')->name('login');
 Route::get('/', function () {
-    return view('user/login');
+    return view('user.login');
 })->name('user.login');
-
-
-Route::get('users/commonHeader','UserController@commonHeader')->name('user.commonHeader');
+Route::get('/login' , 'UserController@login')->name('user.login');
+// Route::filter('auth', function() {
+//     if (Auth::guest())
+//     return Redirect::guest('login');
+// });
+// Route::get('post/postlist', function () {
+//     return view('post.postlist');
+// })->middleware('checkuser');
+Route::group(['middleware' => ['checkuser']], function()  {
 Route::get('post/postlist','PostController@postlist')->name('post.postlist');
+Route::get('users/commonHeader','UserController@commonHeader')->name('user.commonHeader');
 Route::get('post/searchPost','PostController@searchPost')->name('post.searchPost');
 Route::get('post/create','PostController@create')->name('post.create');
 Route::get('post/export','PostController@export')->name('post.export');
@@ -46,10 +60,5 @@ Route::put('user/updateuser','UserController@updateuser')->name('user.updateuser
 Route::delete('user/{user}','UserController@deleteuser')->name('user.deleteuser');
 Route::get('user/changeuserpassword','UserController@changeuserpassword')->name('user.changeuserpassword');
 Route::post('user/updateuserpassword','UserController@updateuserpassword')->name('user.updateuserpassword');
-
-
-
-
-
-
-
+Route::get('user/logout','UserController@logout')->name('user.logout');
+ });

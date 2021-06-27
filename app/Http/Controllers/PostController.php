@@ -35,8 +35,10 @@ class PostController extends Controller
    */
   public function postlist()
   {
+    $search = NULL;
+    log::info($search);
     $posts = $this->postInterface->getPostList();
-    return view('post.postlist', compact('posts'))
+    return view('post.postlist', compact('posts','search'))
       ->with('i', (request()->input('page', 1) - 1) * 5);
   }
   public function searchPost(Request $request)
@@ -50,10 +52,11 @@ class PostController extends Controller
     $search = $request->input('postserach');
     if ($search == NULL) {
       $posts = $this->postInterface->getPostList();
+      $search = '';
     } else {
       $posts = $this->postInterface->searchPostList($search);
     }
-    return view('post.postlist', compact('posts'))
+    return view('post.postlist', compact('posts','search'))
       ->with('i', (request()->input('page', 1) - 1) * 5);
   }
   public function create(Request $request, Post $post)
