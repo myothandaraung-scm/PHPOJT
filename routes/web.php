@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
-// use App\Http\Middleware\Authenticate;
-// use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\TestRole;
+
 
 //Route::get('post/postlist','PostController@postlist')->middleware('checkuser');
 // 
@@ -16,22 +16,14 @@ use App\Http\Middleware\EnsureTokenIsValid;
 | Description : "This page contains users routes, post routes and csv routes toward controllers"
 |
 */
-// Route::get('/', function () {
-//     return view('user/login');
-// })->name('user.login');
-// Route::get('/login' , 'UserController@login')->name('login');
 Route::get('/', function () {
     return view('user.login');
 })->name('user.login');
 Route::get('/login' , 'UserController@login')->name('user.login');
-// Route::filter('auth', function() {
-//     if (Auth::guest())
-//     return Redirect::guest('login');
-// });
-// Route::get('post/postlist', function () {
-//     return view('post.postlist');
-// })->middleware('checkuser');
+
+//Route::get('jquery-form-validation', 'jqueryFormValidation\ContactController@index');
 Route::group(['middleware' => ['checkuser']], function()  {
+Route::get('/','PostController@postlist')->name('post.postlist');
 Route::get('post/postlist','PostController@postlist')->name('post.postlist');
 Route::get('users/commonHeader','UserController@commonHeader')->name('user.commonHeader');
 Route::get('post/searchPost','PostController@searchPost')->name('post.searchPost');
@@ -51,14 +43,19 @@ Route::post('post/importfile','PostController@importfile')->name('post.importfil
 Route::get('users/','UserController@index')->name('user.index');
 Route::get('user/profile','UserController@userprofile')->name('user.profile');
 Route::get('user/searchUser','UserController@searchUser')->name('user.searchUser');
-Route::get('user/register','UserController@register')->name('user.register');
-Route::post('user/confirmuser','UserController@confirmuser')->name('user.confirmuser');
-Route::put('user/createuser','UserController@createuser')->name('user.createuser');
 Route::get('user/{user}/edituser','UserController@edituser')->name('user.edituser');
 Route::post('user/confirmedituser','UserController@confirmedituser')->name('user.confirmedituser');
 Route::put('user/updateuser','UserController@updateuser')->name('user.updateuser');
-Route::delete('user/{user}','UserController@deleteuser')->name('user.deleteuser');
 Route::get('user/changeuserpassword','UserController@changeuserpassword')->name('user.changeuserpassword');
 Route::post('user/updateuserpassword','UserController@updateuserpassword')->name('user.updateuserpassword');
 Route::get('user/logout','UserController@logout')->name('user.logout');
- });
+
+   
+ Route::group(['middleware' => ['testrole']], function()  {
+    Route::get('user/register','UserController@register')->name('user.register');
+    Route::post('user/confirmuser','UserController@confirmuser')->name('user.confirmuser');
+    Route::put('user/createuser','UserController@createuser')->name('user.createuser');
+    Route::delete('user/{user}','UserController@deleteuser')->name('user.deleteuser');
+    });
+
+});

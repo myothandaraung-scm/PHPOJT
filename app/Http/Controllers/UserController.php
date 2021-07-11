@@ -24,8 +24,7 @@ class UserController extends Controller
    */
   public function __construct(UserServiceInterface $userInterface)
   {
-    $this->userInterface = $userInterface;  
-    
+    $this->userInterface = $userInterface;     
   }
   
   /**
@@ -49,13 +48,11 @@ class UserController extends Controller
       'email'    => 'required|email|exists:users,email',
       'password' => 'required',
     ]);
-    //return redirect()->intended('post/postlist');
     $request->session()->put('userid', 'value');
     $credentials = $request->only('email', 'password');
     if (Auth::attempt($credentials)) {
       $request->session()->regenerate();
       return redirect()->route('post.postlist');
-      //return redirect()->intended('post/postlist');
     }
     else{
       $errors['password']=  'password is incorrect';
@@ -94,19 +91,7 @@ class UserController extends Controller
     $request->session()->forget('user');
     $request->session()->forget('editpost');
     $request->session()->forget('edituser');
-    $namesearch = $request->input('namesearch');
-    $emailsearch = $request->input('emailsearch');
-    $createdformsearch = $request->input('createdfromsearch');
-    $createdtosearch = $request->input('createdtosearch');
-    if ($namesearch == NULL && $emailsearch == NULL && $createdformsearch == NULL && $createdtosearch == NULL) {
-      $users = $this->userInterface->getUserList();
-    } else {
-      $namesearch = !is_null($namesearch) ? $namesearch : '';
-      $emailsearch = !is_null($emailsearch) ? $emailsearch : '';
-      $createdformsearch = !is_null($createdformsearch) ? $createdformsearch : '';
-      $createdtosearch = !is_null($createdtosearch) ? $createdtosearch : '';
-      $users = $this->userInterface->searchUserList($namesearch,$emailsearch,$createdformsearch,$createdtosearch);
-    }
+    $users = $this->userInterface->searchUserList($request);
     return view('user.index', compact('users'))
       ->with('i', (request()->input('page', 1) - 1) * 5);
   }
@@ -135,12 +120,10 @@ class UserController extends Controller
       'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
       ]);
       $type = '';
-      log::info($request);
       if($request->type == '0'){
         $request->type  = 'Admin';
       }
       else{
-        log::info("false admin");
         $request->type  = 'User';
       }
       $id = Auth::user()->id;
@@ -187,6 +170,7 @@ class UserController extends Controller
     $request->validate([
       'name' => 'min:3|max:50',
       'email' => 'email',
+      'phone' => 'max:12',
       'password' => 'min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/|same:confirm_password',
       'confirm_password' => 'min:8',
       'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -196,7 +180,6 @@ class UserController extends Controller
         $request->type  = 'Admin';
       }
       else{
-        log::info("false admin");
         $request->type  = 'User';
       }
       $id = Auth::user()->id;
@@ -211,9 +194,6 @@ class UserController extends Controller
 
   public function updateuser(Request $request)
   {
-    //$id = Auth::
-    log::info("update data");
-    log::info($request);
     $request->session()->forget('post');
     $request->session()->forget('user');
     $request->session()->forget('editpost');
@@ -242,19 +222,19 @@ class UserController extends Controller
       'old_password' => 'required',
       'new_password' => 'min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/|different:old_password|same:new_confirmpassword',
       'new_confirmpassword' => 'min:8|same:new_password',
-      ]);
-      if (Hash::check($request->old_password, Auth::user()->password)) { 
-        Auth::user()->fill([
-         'password' => Hash::make($request->new_password)
-         ])->save();
-     
-        $request->session()->flash('success', 'Password changed');
-         return redirect()->intended('users/');
-     
-     } else {
-        $errors['old_password']=  'incorrect existing password';
-        return redirect()->back()->withErrors($errors);
-     }
+    ]);
+    if (Hash::check($request->old_password, Auth::user()->password)) { 
+      Auth::user()->fill([
+        'password' => Hash::make($request->new_password)
+        ])->save();
+    
+      $request->session()->flash('success', 'Password changed');
+        return redirect()->intended('users/');
+    
+    } else {
+      $errors['old_password']=  'incorrect existing password';
+      return redirect()->back()->withErrors($errors);
+    }
   }
   public function logout(){
     Auth::logout();

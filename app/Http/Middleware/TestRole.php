@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Closure;
 
-class EnsureTokenIsValid
+class TestRole
 {
     /**
      * Handle an incoming request.
@@ -16,17 +16,14 @@ class EnsureTokenIsValid
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()){
+        log::info("testrole");
+        log::info(Auth::user());
+        if (Auth::user() &&  Auth::user()->type == '0') {
             return $next($request);
-        }
-        else{
-            if ($request->has('_token')) {
-                return $next($request);    
-            }
-            else{
-                return redirect()->route('user.login');           
+       }
 
-            }
-        }       
+       return redirect()->route('user.index')->with('roleError','You have not admin access');
+    //    redirect()->route('user.login')
+    //     //return $next($request);
     }
 }

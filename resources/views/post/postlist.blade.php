@@ -4,23 +4,29 @@
   <div class="row">
     <div class="col-md-8 col-sm-8">
       <form action="{{ route('post.searchPost') }}" method="GET" role="search">
-        {{ csrf_field() }}
-        <div class="input-group mb-3">
-          <input type="search" class="form-control" name="postserach" placeholder="Search" value="{{$search}}" aria-label="Search" aria-describedby="search-addon" />
-          <div class="input-group-append">
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-primary">Search</button>
-            </span>
+        @csrf                                                                   
+          <div class="input-group mb-3">
+            <input type="search" class="form-control" name="postserach" placeholder="Search" value="{{ app('request')->input('postserach') }}" aria-label="Search" aria-describedby="search-addon" />
+            <div class="input-group-append">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </span>
+            </div>
           </div>
-        </div>
-      </form>
+      </form>                                                
     </div>
     <div class="col-md-4 col-sm-4">
       <a class="btn btn-info btn-md" href="{{route('post.importCSV')}}">Upload</a>
-      <a class="btn btn-info btn-md" href="{{route('post.export')}}">Download</a>
+      <a class="btn btn-info btn-md" href="{{route('post.export',['search'=>app('request')->input('postserach')])}}">Download</a>
       <a class="btn btn-info btn-md" href="{{route('post.create')}}">Add</a>
     </div>
   </div>
+  @if($import_message != NULL)
+    <HelpBlock>
+        <span class="row justify-content-center text-success">{{$import_message}}</span>
+        <br>
+    </HelpBlock>
+  @endif
   <table class="table table-striped">
     <thead class="thead-light">
       <tr>
@@ -37,7 +43,7 @@
     @if(count($posts) == 0)
       <td colspan="7">
             <HelpBlock>
-                <span class="row justify-content-center">Search data is Empty</span>
+                <span class="row justify-content-center">Post data is Empty</span>
             </HelpBlock>
         </td>
     @else
@@ -55,45 +61,45 @@
                   </div>
                   <div class="modal-body">
                     <div class="form-group row">
-                        <label for="title" class="col-sm-6 col-form-label">Post Title</label>
-                        <div class="col-sm-6">
+                        <label for="title" class="col-sm-4 col-form-label">Post Title</label>
+                        <div class="col-sm-8">
                             <input type="text" name="title" readonly class="form-control-plaintext" value="{{$post->title}}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="description" class="col-sm-6 col-form-label">Description</label>
-                        <div class="col-sm-6">
+                        <label for="description" class="col-sm-4 col-form-label">Description</label>
+                        <div class="col-sm-8 break-text">
                             <input type="text" name="description" readonly class="form-control-plaintext" value="{{$post->description}}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="title" class="col-sm-6 col-form-label">status</label>
-                        <div class="col-sm-6">
+                        <label for="title" class="col-sm-4 col-form-label">status</label>
+                        <div class="col-sm-8">
                             <input type="text" name="status" readonly class="form-control-plaintext" value="{{$post->status}}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="description" class="col-sm-6 col-form-label">Create_at</label>
-                        <div class="col-sm-6">
-                            <input type="text" name="created_at" readonly class="form-control-plaintext" value="{{$post->created_at}}">
+                        <label for="description" class="col-sm-4 col-form-label">Create_at</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="created_at" readonly class="form-control-plaintext" value="{{ \Carbon\Carbon::parse($post->created_at)->format('Y/m/d') }}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="title" class="col-sm-6 col-form-label">Created User</label>
-                        <div class="col-sm-6">
+                        <label for="title" class="col-sm-4 col-form-label">Created User</label>
+                        <div class="col-sm-8">
                             <input type="text" name="createusesr" readonly class="form-control-plaintext" value="{{$post->createuser}}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="description" class="col-sm-6 col-form-label">LastUpdated User</label>
-                        <div class="col-sm-6">
+                        <label for="description" class="col-sm-4 col-form-label">LastUpdated User</label>
+                        <div class="col-sm-8">
                             <input type="text" name="updateuser" readonly class="form-control-plaintext" value="{{$post->updateuser}}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="description" class="col-sm-6 col-form-label">LastUpdated_at</label>
-                        <div class="col-sm-6">
-                            <input type="text" name="updated_at" readonly class="form-control-plaintext" value="{{$post->updated_at}}">
+                        <label for="description" class="col-sm-4 col-form-label">LastUpdated_at</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="updated_at" readonly class="form-control-plaintext" value="{{ \Carbon\Carbon::parse($post->updated_at)->format('Y/m/d') }}">
                         </div>
                     </div>                    
                   </div>
@@ -106,7 +112,7 @@
         </td>
         <td>{{$post->description}}</td>
         <td>{{$post->createuser}}</td>
-        <td>{{$post->created_at}}</td>
+        <td>{{ \Carbon\Carbon::parse($post->created_at)->format('Y/m/d') }}</td>
         <td><a class="btn btn-primary-outline" href="{{route('post.editpost',$post->id)}}">Edit</a></td>
         <td>
           <form action="{{route('post.deletepost',$post->id)}}" method="POST">

@@ -3,7 +3,7 @@
 <div class="createform">
     <div class="row">
         <h3 class="col-md-4 bg-text">Password Change</h3>
-        <a class="btn btn-primary" href="window.location='{{ url()->previous() }}'"> Back</a>
+        <a class="btn btn-primary" onclick="window.location='{{ url()->previous() }}'"> Back</a>
     </div>
     <br>
     <script>console.log("erors",$errors)</script>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="form-group mt-5 row">
-        <button class="btn btn-primary" type="button" onclick="window.location='{{ url()->previous()}}'">Cancel</button>
+        <button class="btn btn-primary" type="button" onclick="clearValue()">Clear</button>
         <div class="col-sm-6">
             <button class="btn btn-primary" type="submit">Change</button>
         </div>
@@ -47,9 +47,9 @@
 <script>
 function clearValue()
 {
-    document.getElementById("old_password").value="";
-    document.getElementById("new_password").value="";
-    document.getElementById("new_confirmpassword").value="";
+    $('#old_password').val("");
+    $('#new_password').val("");
+    $('#new_confirmpassword').val("");
 }
 console.log("erors",$errors)
 </script>

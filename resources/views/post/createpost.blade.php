@@ -2,7 +2,7 @@
 @section('content')
 <div class="createform">
     <div class="row">
-        <h3 class="col-md-4 bg-text">Add New User</h3>
+        <h3 class="col-md-4 bg-text">Add New Post</h3>
         <a class="btn btn-primary" href="{{ route('post.postlist') }}"> Back</a>
     </div>
     <br>
@@ -11,20 +11,25 @@
         <div class="form-group row">
             <label for="title" class="col-sm-2 col-form-label">Post Title</label>
             <div class="col-sm-6">
-                <input type="text" name="title" id="title" placeholder="enter title" class="form-control" value="{{$posts->title}}">
+                <div class="input-group-prepend">
+                    <input type="text" name="title" id="title" placeholder="enter title" class="form-control" value="{{$posts->title}}"><span class="fillData">*</span>              
+                </div>
                 @if($errors->has('title'))
-                    <span class="text-danger">{{ $errors->first('title') }}</span>
+                        <span class="text-danger">{{ $errors->first('title') }}</span>
                 @endif
             </div>
+            
         </div>
         <div class="form-group row">
             <label for="description" class="col-sm-2 col-form-label">Description</label>
             <div class="col-sm-6">
-                <textarea type="text" class="form-control" id="description" style="height:100px" name="description" placeholder="enter description">{{ $posts->description }}</textarea>
+                <div class="input-group-prepend">
+                    <textarea type="text" class="form-control" id="description" style="height:100px" name="description" placeholder="enter description">{{ $posts->description }}</textarea><span class="fillData">*</span>              
+                </div>
                 @if($errors->has('description'))
-                    <span class="text-danger">{{ $errors->first('description') }}</span>
+                        <span class="text-danger">{{ $errors->first('description') }}</span>
                 @endif
-            </div>
+            </div>           
         </div>
         <div class="form-group mt-5 row">
             <button class="btn btn-primary" type="button" onclick="clearValue()">Clear</button>

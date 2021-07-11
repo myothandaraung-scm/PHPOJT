@@ -72,7 +72,7 @@
                         <div class="form-group row">
                             <label for="phone" class="col-md-4 col-form-label text-md-left">Phone</label>
                             <div class="col-md-6">
-                                <input type="text" id="phone" class="form-control" name="phone" placeholder="Enter Phone" value="{{$user->phone}}">
+                                <input type="number" id="phone" class="form-control" name="phone" placeholder="Enter Phone" value="{{$user->phone}}">
                                 @if($errors->has('phone'))
                                     <span class="text-danger">{{ $errors->first('phone') }}</span>
                                 @endif

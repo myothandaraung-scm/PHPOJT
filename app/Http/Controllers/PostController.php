@@ -13,8 +13,10 @@ use App\Contracts\Services\Post\PostServiceInterface;
 use App\Models\Post;
 use App\Post as AppPost;
 use Illuminate\Validation\Rule;
-//use Illuminate\Support\Facades;
-use function PHPSTORM_META\type;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Exports\PostExport;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use App\Http\Controllers\ExportController;
 
 class PostController extends Controller
 {
@@ -33,13 +35,17 @@ class PostController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function postlist()
+  public function postlist(Request $request)
   {
-    $search = NULL;
-    log::info($search);
-    $posts = $this->postInterface->getPostList();
-    return view('post.postlist', compact('posts','search'))
-      ->with('i', (request()->input('page', 1) - 1) * 5);
+    $posts = $this->postInterface->getPostList(Auth::user()->type,Auth::user()->id);
+    $import_message = NULL;
+    if($request->has('import')){
+      $import_message = $request->import;
+      $request->import = NULL;
+    }
+    return view('post.postlist', compact('posts'))
+      ->with('i', (request()->input('page', 1) - 1) * 5)
+      ->with('import_message',$import_message);
   }
   public function searchPost(Request $request)
   {
@@ -47,16 +53,10 @@ class PostController extends Controller
     $request->session()->forget('user');
     $request->session()->forget('editpost');
     $request->session()->forget('edituser');
-    log::info("search");
-    log::info($request);
+    $posts = $this->postInterface->searchPostList($request);
+    $import_message = NULL;
     $search = $request->input('postserach');
-    if ($search == NULL) {
-      $posts = $this->postInterface->getPostList();
-      $search = '';
-    } else {
-      $posts = $this->postInterface->searchPostList($search);
-    }
-    return view('post.postlist', compact('posts','search'))
+    return view('post.postlist', compact('posts','import_message'))
       ->with('i', (request()->input('page', 1) - 1) * 5);
   }
   public function create(Request $request, Post $post)
@@ -73,7 +73,7 @@ class PostController extends Controller
   public function confirmPost(Request $request)
   {
     $request->validate([
-      'title'    => 'required|unique:posts,title',
+      'title'    => 'required|max:255|unique:posts,title',
       'description' => 'required',
     ]);
     $request->session()->put('post', ['titlepost' => $request->title, 'postdescription' => $request->description]);
@@ -100,7 +100,6 @@ class PostController extends Controller
       $post->id = $request->session()->get('editpost')['postid'];
       $post->title = $request->session()->get('editpost')['titlepost'];
       $post->description = $request->session()->get('editpost')['postdescription'];
-      log::info($request->session()->get('editpost')['poststatus']);
       $post->status = $request->session()->get('editpost')['poststatus'];
       $request->session()->forget('editpost');
     }
@@ -112,12 +111,11 @@ class PostController extends Controller
   {
     $status = 1;
     $request->validate([
-      'title'    => 'required',
+      'title'    => 'required|max:255|unique:posts,title',
       'description' => 'required',
     ]);
     if ($request->status == 'on') {
       $status = 1;
-      log::info($request->status);
     } else {
       $status = 0;
     }
@@ -133,7 +131,7 @@ class PostController extends Controller
     $request->session()->forget('edituser');
     $request->session()->forget('editpost');
     $id = Auth::user()->id;
-    $this->postInterface->updatePost($request, $post, $id);
+    $this->postInterface->updatePost($request,$id);
     return redirect()->intended('post/postlist');
   }
 
@@ -145,52 +143,28 @@ class PostController extends Controller
     return redirect()->route('post.postlist')
       ->with('success', 'post deleted successfully');
   }
-  public function export(Post $post)
-  {
-    $request->session()->forget('post');
-    $request->session()->forget('user');
-    $request->session()->forget('editpost');
-    $request->session()->forget('edituser');
-    log::info("export");
-    log::info($post);
-    $headers = array(
-      "Content-type" => "text/csv",
-      "Content-Disposition" => "attachment; filename=file.csv",
-      "Pragma" => "no-cache",
-      "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-      "Expires" => "0"
-    );
-
-    $posts = $this->postInterface->exportPost();
-    $columns = array('title', 'description', 'Posted User', 'Created Time');
-
-    $callback = function () use ($posts, $columns) {
-      $file = fopen('php://output', 'w');
-      fputcsv($file, $columns);
-
-      foreach ($posts as $post) {
-        fputcsv($file, array($post->title, $post->description, $post->description, $post->name, $post->created_at));
-      }
-      fclose($file);
-    };
-    return Response::stream($callback, 200, $headers);
-  }
 
   public function importCSV()
   {
     return view('post.importCSV');
   }
 
-  public function importfile()
+  public function importfile(Request $request)
   {
-    $request->validate([
-      'file' => 'required|mimes:csv,txt,xlx,xls,xlsx|max:2048'
-      ]);
+      $request->validate([
+        'file' => 'required|mimes:csv,txt|max:2048'
+        ]);
       $id = Auth::user()->id;
-      $this->postInterface->importData($request,$id);
+      $import =$this->postInterface->importData($request,$id);
       $name = time().'_'.$request->file->getClientOriginalName();
-      return redirect()->intended('post/postlist')
-      ->with('success','File has uploaded to the database.')
-      ->with('file', $name);
+      return redirect()->intended(route('post.postlist',['import'=>$import]));
+
+  }
+
+  public function export(Request $request)
+  {
+    $posts = $this->postInterface->exportPost($request);
+    return Excel::download(new PostExport($posts), 'posts.xlsx');
+    
   }
 }
